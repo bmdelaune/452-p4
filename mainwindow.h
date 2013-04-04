@@ -6,7 +6,6 @@
 #include <QListWidgetItem>
 #include <QMouseEvent>
 #include "canvas.h"
-#include "network.h"
 
 namespace Ui {
     class MainWindow;
@@ -21,13 +20,12 @@ public:
     ~mainWindow();
 
 public slots:
-    void on_axisList_itemClicked(QListWidgetItem *item);
-    void disableButtons();
+
     
 private:
     Ui::MainWindow *ui;
     Canvas* scene;
-    Connector *c;
+
 };
 
 #endif // MAINWINDOW_H
