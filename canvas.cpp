@@ -10,8 +10,20 @@ Canvas::Canvas(QObject *parent) :
 }
 
 void Canvas::initialize(){
-    Robot* robot = new Robot();
-    robot->setPos(100, 100);
+    m_robotManager = new RobotManager();
+    Robot* robot;
+    for(int i=0; i<1; i++) {
+        robot = new Robot();
+        robot->setPos(100*i, 100);
+        createRobot(robot);
+
+    }
+
+}
+
+void Canvas::createRobot(Robot *robot)
+{
+    m_robotManager->addRobot(robot);
     this->addItem(robot);
 }
 

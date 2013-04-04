@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <vector>
+#include "robotmanager.h"
 
 class Canvas : public QGraphicsScene
 {
@@ -18,13 +19,15 @@ public slots:
 
 private:
 
+    void createRobot(Robot* robot);
+
     QBrush blackBrush;
     QPen blackPen;
     QBrush paintBrush;
     QPen paintPen;
 
 
-
+    RobotManager* m_robotManager;
 };
 
 #endif // CANVAS_H
