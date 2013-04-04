@@ -18,7 +18,9 @@ void Robot::paint(QPainter *painter,
      Q_UNUSED(option);
      Q_UNUSED(widget);
      if (pixmap.isNull()) {
-         painter->setBrush(Qt::black);
+         painter->setBrush(Qt::transparent);
+         painter->setPen(Qt::black);
+
          painter->drawRect(ROBOT_WIDTH/2, ROBOT_HEIGHT/2, ROBOT_WIDTH, ROBOT_HEIGHT);
      } else {
          painter->scale(.2272, .2824);

@@ -3,6 +3,8 @@
 #include <vector>
 #include <QDebug>
 #include "robot.h"
+#include "lightsource.h"
+
 
 Canvas::Canvas(QObject *parent) :
     QGraphicsScene(parent)
@@ -18,7 +20,9 @@ void Canvas::initialize(){
         createRobot(robot);
 
     }
-
+    LightSource* lightSource = new LightSource();
+    m_robotManager->setLightSource(lightSource);
+    this->addItem(lightSource);
 }
 
 void Canvas::createRobot(Robot *robot)
