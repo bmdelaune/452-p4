@@ -9,12 +9,8 @@
 #define DEG_TO_RAD M_PI/180
 
 /* Program Config */
-#define NUM_LINKS 3
-#define BASE_ANGLE 3
-#define WIDTH 30
-#define HEIGHT 5*WIDTH
-#define PAINTER_DIAMETER 10
-#define XYMOVE 3
+#define ROBOT_WIDTH 50
+#define ROBOT_HEIGHT 100
 
 
 #endif // UTILS_H

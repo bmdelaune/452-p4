@@ -2,11 +2,7 @@
 #include "Utils.h"
 #include <vector>
 #include <QDebug>
-#include <math.h>
-#include <QGraphicsLineItem>
-#include <QtWidgets/QColorDialog>
-
-extern int axis_number;
+#include "robot.h"
 
 Canvas::Canvas(QObject *parent) :
     QGraphicsScene(parent)
@@ -14,7 +10,9 @@ Canvas::Canvas(QObject *parent) :
 }
 
 void Canvas::initialize(){
-
+    Robot* robot = new Robot();
+    robot->setPos(100, 100);
+    this->addItem(robot);
 }
 
 
