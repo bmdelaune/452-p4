@@ -20,7 +20,8 @@ public:
     ~mainWindow();
 
 public slots:
-
+    void setup();
+    void reset();
     
 private:
     Ui::MainWindow *ui;

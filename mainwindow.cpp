@@ -29,10 +29,28 @@ mainWindow::mainWindow(QWidget *parent) :
 
     ui->graphicsView->rotate(180);
 
+    connect(ui->setBtn, SIGNAL(clicked()), this, SLOT(setup()));
+    connect(ui->resetBtn, SIGNAL(clicked()), this, SLOT(reset()));
 
 }
 
 mainWindow::~mainWindow()
 {
     delete ui;
+}
+
+void mainWindow::setup() {
+    ui->numBots->setEnabled(false);
+    ui->kMatrix->setEnabled(false);
+    ui->initPos->setEnabled(false);
+    ui->setBtn->setEnabled(false);
+    ui->loadFile->setEnabled(false);
+}
+
+void mainWindow::reset() {
+    ui->numBots->setEnabled(true);
+    ui->kMatrix->setEnabled(true);
+    ui->initPos->setEnabled(true);
+    ui->setBtn->setEnabled(true);
+    ui->loadFile->setEnabled(true);
 }
