@@ -35,8 +35,7 @@ void LightSource::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 void LightSource::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(event->buttons() & Qt::LeftButton)
-        {
+    if(event->buttons() & Qt::LeftButton) {
             this->setPos(mapToParent(event->pos() - m_offset));
-        }
+    }
 }

@@ -9,12 +9,21 @@
 class Robot : public QGraphicsItem
 {
 public:
+
+    enum Side{
+        RIGHT,
+        LEFT
+    };
+
     Robot(QGraphicsItem *parent = 0);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     void setId(int id) { m_id = id; }
     int getId() { return m_id; }
+
+    Sensor *getSensor(Side side);
+    Wheel* getWheel(Side side);
 
 private:
 

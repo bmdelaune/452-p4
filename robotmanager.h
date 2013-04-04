@@ -10,10 +10,13 @@ using namespace std;
 class RobotManager
 {
 public:
+
     RobotManager();
-    void addRobot(Robot* robot) { m_robots.push_back(robot); }
+    void addRobot(Robot* robot) { robot->setId(m_robots.size()); m_robots.push_back(robot); }
 
     void setLightSource(LightSource* lightSource) { m_lightSource = lightSource; }
+    double getIntensity(int id, Robot::Side side);
+
 private:
     vector<Robot*> m_robots;
     LightSource* m_lightSource;

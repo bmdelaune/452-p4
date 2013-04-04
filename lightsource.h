@@ -17,6 +17,9 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
+    void setIntensity(double intensity) { m_intensity = intensity; }
+    double getIntensity() { return m_intensity; }
+
 signals:
     
 public slots:
@@ -24,6 +27,9 @@ public slots:
 private:
     QPixmap m_pixmap;
     QPointF m_offset;
+
+    double m_intensity;
+
 };
 
 #endif // LIGHTSOURCE_H

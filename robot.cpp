@@ -26,4 +26,20 @@ void Robot::paint(QPainter *painter,
          painter->scale(.2272, .2824);
          painter->drawPixmap(QPointF(-15 * 4.4, -50 * 3.54), pixmap);
      }
- }
+}
+
+Sensor* Robot::getSensor(Robot::Side side)
+{
+    if (side == LEFT)
+        return m_leftSensor;
+    else
+        return m_rightSensor;
+}
+
+Wheel* Robot::getWheel(Robot::Side side)
+{
+    if (side == LEFT)
+        return m_leftWheel;
+    else
+        return m_rightWheel;
+}
