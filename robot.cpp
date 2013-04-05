@@ -20,8 +20,11 @@ void Robot::paint(QPainter *painter,
      if (pixmap.isNull()) {
          painter->setBrush(Qt::transparent);
          painter->setPen(Qt::black);
+         qreal x = this->pos().x() - ROBOT_WIDTH/2;
+         qreal y = this->pos().y() - ROBOT_HEIGHT/2;
+         qDebug() << "TOP LEFT:" << x << "," << y;
+         painter->drawRect(x, y, ROBOT_WIDTH, ROBOT_HEIGHT);
 
-         painter->drawRect(ROBOT_WIDTH/2, ROBOT_HEIGHT/2, ROBOT_WIDTH, ROBOT_HEIGHT);
      } else {
          painter->scale(.2272, .2824);
          painter->drawPixmap(QPointF(-15 * 4.4, -50 * 3.54), pixmap);

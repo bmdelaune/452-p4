@@ -15,12 +15,14 @@ public:
 signals:
 
 public slots:
-    void setup(int bots, QVector<QPointF> locations);
+    void setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPointF> lightLoc);
 
 
 private:
-    QVector<QPointF> generateLoc(int num);
+    QVector<QPointF> defaultBotLoc(int num);
+    QVector<QPointF> defaultLightLoc(int num);
     void createRobot(Robot* robot);
+    void createLight(LightSource *light);
 
     QBrush blackBrush;
     QPen blackPen;

@@ -26,7 +26,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Canvas* scene;
-    QVector<QPointF> locations();
+    QVector<QPointF> botLoc();
+    QVector<QPointF> lightLoc();
 
 };
 

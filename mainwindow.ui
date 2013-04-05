@@ -494,47 +494,53 @@
    <widget class="QTextEdit" name="kMatrix">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>181</width>
-      <height>181</height>
+      <x>70</x>
+      <y>280</y>
+      <width>51</width>
+      <height>51</height>
      </rect>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>40</y>
-      <width>61</width>
+      <x>70</x>
+      <y>260</y>
+      <width>51</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
      <string>K-Matrix</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QTextEdit" name="initPos">
+   <widget class="QTextEdit" name="botPos">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>280</y>
-      <width>181</width>
-      <height>181</height>
+      <y>90</y>
+      <width>81</width>
+      <height>151</height>
      </rect>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>260</y>
+      <x>10</x>
+      <y>70</y>
       <width>81</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Initial Positions</string>
+     <string>Robot Positions</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="loadFile">
@@ -561,6 +567,55 @@
     </property>
     <property name="text">
      <string>SET</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="numLights">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>40</y>
+      <width>51</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Number of Lights</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>70</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Light Positions</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="lightPos">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>90</y>
+      <width>81</width>
+      <height>151</height>
+     </rect>
     </property>
    </widget>
   </widget>

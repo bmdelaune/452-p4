@@ -10,7 +10,7 @@ RobotManager::RobotManager()
 double RobotManager::getIntensity(int id, Robot::Side side)
 {
     QPointF robotPos = m_robots[id]->getSensor(side)->loc;
-    QPointF lightPos = m_lightSource->pos();
+    QPointF lightPos = m_lights[id]->pos();
 
     double diffX = robotPos.x() - lightPos.x();
     double diffY = robotPos.y() - lightPos.y();

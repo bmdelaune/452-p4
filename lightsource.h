@@ -20,6 +20,9 @@ public:
     void setIntensity(double intensity) { m_intensity = intensity; }
     double getIntensity() { return m_intensity; }
 
+    void setId(int id) { m_id = id; }
+    int getId() { return m_id; }
+
 signals:
     
 public slots:
@@ -27,8 +30,8 @@ public slots:
 private:
     QPixmap m_pixmap;
     QPointF m_offset;
-
     double m_intensity;
+    int m_id;
 
 };
 

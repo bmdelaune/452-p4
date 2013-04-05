@@ -10,7 +10,7 @@
 
 /* Program Config */
 #define ROBOT_WIDTH 50
-#define ROBOT_HEIGHT 100
+#define ROBOT_HEIGHT 50
 #define LIGHT_SOURCE_RADIUS 20
 
 #endif // UTILS_H
