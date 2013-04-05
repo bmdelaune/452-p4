@@ -39,7 +39,33 @@ mainWindow::~mainWindow()
     delete ui;
 }
 
+QVector<QPointF> mainWindow::locations() {
+    QVector <QPointF> vec;
+    QString posStr = ui->initPos->toPlainText();
+    QStringList list = posStr.split(QRegExp("\\s"));
+    qreal x, y;
+    for (int i = 0; i < list.size(); i++)
+    {
+        if (i % 2 == 0)
+            x = list[i].toInt();
+        else
+        {
+            y = list[i].toInt();
+            QPointF point = QPointF(x, y);
+            vec.push_back(point);
+        }
+    }
+    for (int i = 0; i < vec.size(); i++)
+    {
+        qDebug() << "Point " << i << " = (" << vec[i].x() << ", " << vec[i].y() << ")";
+    }
+    return vec;
+}
+
 void mainWindow::setup() {
+    int bots = ui->numBots->text().toInt();
+    QVector<QPointF> loc = locations();
+    scene->setup(bots, loc);
     ui->numBots->setEnabled(false);
     ui->kMatrix->setEnabled(false);
     ui->initPos->setEnabled(false);

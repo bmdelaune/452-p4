@@ -26,6 +26,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Canvas* scene;
+    QVector<QPointF> locations();
 
 };
 

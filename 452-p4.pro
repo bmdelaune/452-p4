@@ -15,11 +15,21 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    canvas.cpp
+    canvas.cpp \
+    wheel.cpp \
+    sensor.cpp \
+    robotmanager.cpp \
+    robot.cpp \
+    lightsource.cpp
 
 HEADERS  += mainwindow.h \
     canvas.h \
-    Utils.h
+    Utils.h \
+    wheel.h \
+    sensor.h \
+    robotmanager.h \
+    robot.h \
+    lightsource.h
 
 FORMS    += mainwindow.ui
 
