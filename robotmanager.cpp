@@ -19,3 +19,8 @@ double RobotManager::getIntensity(int id, Robot::Side side)
 
     return distance;
 }
+
+void RobotManager::clear() {
+    m_robots.clear();
+    m_lights.clear();
+}

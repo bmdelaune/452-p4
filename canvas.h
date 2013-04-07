@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <vector>
+#include <QtAlgorithms>
 #include "robotmanager.h"
 
 class Canvas : public QGraphicsScene
@@ -15,8 +16,8 @@ public:
 signals:
 
 public slots:
-    void setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPointF> lightLoc);
-
+    void setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPointF> lightLoc, int **matrix);
+    void clear();
 
 private:
     QVector<QPointF> defaultBotLoc(int num);
@@ -29,7 +30,7 @@ private:
     QBrush paintBrush;
     QPen paintPen;
 
-
+    int **kmatrix;
     RobotManager* m_robotManager;
 };
 

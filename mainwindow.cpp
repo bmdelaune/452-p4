@@ -18,21 +18,15 @@ mainWindow::mainWindow(QWidget *parent) :
 
     QRectF rect = ui->graphicsView->rect();
 
-    //rect.setX(-rect.width()/2);
-    //rect.setX(-(rect.width()-10)/2);
-    //rect.setWidth(ui->graphicsView->width()-5);
-    //rect.setHeight(ui->graphicsView->height()-5);
     scene->setSceneRect(rect);
 
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setMouseTracking(true);
     scene->initialize();
 
-    //ui->graphicsView->rotate(180);
-
     connect(ui->setBtn, SIGNAL(clicked()), this, SLOT(setup()));
     connect(ui->resetBtn, SIGNAL(clicked()), this, SLOT(reset()));
-
+    connect(ui->loadFile, SIGNAL(clicked()), this, SLOT(loadFromFile()));
 }
 
 mainWindow::~mainWindow()
@@ -40,9 +34,9 @@ mainWindow::~mainWindow()
     delete ui;
 }
 
-QVector<QPointF> mainWindow::botLoc() {
+QVector<QPointF> mainWindow::botLoc(QString posStr) {
     QVector <QPointF> vec;
-    QString posStr = ui->botPos->toPlainText();
+    //QString posStr = ui->botPos->toPlainText();
     QStringList list = posStr.split(QRegExp("\\s"));
     qreal x, y;
     for (int i = 0; i < list.size(); i++)
@@ -63,9 +57,9 @@ QVector<QPointF> mainWindow::botLoc() {
     return vec;
 }
 
-QVector<QPointF> mainWindow::lightLoc() {
+QVector<QPointF> mainWindow::lightLoc(QString posStr) {
     QVector <QPointF> vec;
-    QString posStr = ui->lightPos->toPlainText();
+   // QString posStr = ui->lightPos->toPlainText();
     QStringList list = posStr.split(QRegExp("\\s"));
     qreal x, y;
     for (int i = 0; i < list.size(); i++)
@@ -84,14 +78,43 @@ QVector<QPointF> mainWindow::lightLoc() {
         qDebug() << "Point " << i << " = (" << vec[i].x() << ", " << vec[i].y() << ")";
     }
     return vec;
+}
+int **mainWindow::kMatrix(QString kStr) {
+    int *matrix[2];
+    matrix[0] = new int[2];
+    matrix[1] = new int[2];
+   // QString kStr = ui->kMatrix->toPlainText();
+    QStringList list = kStr.split(QRegExp("\\s"));
+    if (list.size() != 4)
+    {
+        qDebug() << "ERROR: Invalid matrix. Using the default (go towards the light).";
+        matrix[0][0] = 0;
+        matrix[0][1] = 1;
+        matrix[1][0] = 1;
+        matrix[1][1] = 0;
+    }
+    else
+    {
+        matrix[0][0] = list[0].toInt();
+        matrix[0][1] = list[1].toInt();
+        matrix[1][0] = list[2].toInt();
+        matrix[1][1] = list[3].toInt();
+    }
+    qDebug() << "K MATRIX:";
+    qDebug() << "[" << matrix[0][0] << matrix[0][1];
+    qDebug() << " " << matrix[1][0] << matrix[1][1] << "]";
+    return matrix;
+}
+
+void mainWindow::parseFile(int &bots, int &lights, QVector<QPointF> &botPos, QVector<QPointF> &lightPos, int **matrix) {
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open File..."), "C:\\", tr("Files (*.*)"));
 }
 
 void mainWindow::setup() {
     int bots = ui->numBots->text().toInt();
     int lights = ui->numLights->text().toInt();
-    QVector<QPointF> botPos = botLoc();
-    QVector<QPointF> lightPos = lightLoc();
-    scene->setup(bots, lights, botPos, lightPos);
+    scene->setup(bots, lights, botLoc(ui->botPos->toPlainText()),
+                 lightLoc(ui->lightPos->toPlainText()), kMatrix(ui->kMatrix->toPlainText()));
     ui->numBots->setEnabled(false);
     ui->numLights->setEnabled(false);
     ui->kMatrix->setEnabled(false);
@@ -102,6 +125,7 @@ void mainWindow::setup() {
 }
 
 void mainWindow::reset() {
+    scene->clear();
     ui->numBots->setEnabled(true);
     ui->numLights->setEnabled(true);
     ui->kMatrix->setEnabled(true);
@@ -109,4 +133,20 @@ void mainWindow::reset() {
     ui->lightPos->setEnabled(true);
     ui->setBtn->setEnabled(true);
     ui->loadFile->setEnabled(true);
+}
+
+void mainWindow::loadFromFile() {
+    int bots , lights;
+    QVector<QPointF> botPos, lightPos;
+    int **kmatrix;
+    parseFile(bots, lights, botPos, lightPos, kmatrix);
+    //scene->setup(bots, lights, botLoc(ui->botPos->toPlainText()),
+     //            lightLoc(ui->lightPos->toPlainText()), kMatrix(ui->kMatrix->toPlainText()));
+    ui->numBots->setEnabled(false);
+    ui->numLights->setEnabled(false);
+    ui->kMatrix->setEnabled(false);
+    ui->botPos->setEnabled(false);
+    ui->lightPos->setEnabled(false);
+    ui->setBtn->setEnabled(false);
+    ui->loadFile->setEnabled(false);
 }

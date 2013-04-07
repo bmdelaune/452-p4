@@ -57,7 +57,7 @@ QVector<QPointF> Canvas::defaultLightLoc(int num) {
     return vec;
 }
 
-void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPointF> lightLoc) {
+void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPointF> lightLoc, int **matrix) {
     if (bots == 0)
     {
         bots = 1;
@@ -81,6 +81,7 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
         lightLoc = defaultLightLoc(lights);
         qDebug() << "ERROR: Not enough light locations. Using the default locations.";
     }
+    kmatrix = matrix;
     Robot* robot;
     for(int i = 0; i < bots; i++) {
         robot = new Robot();
@@ -91,10 +92,13 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
     for (int i = 0; i < lights; i++)
     {
         light = new LightSource();
-        //qDebug() << "LIGHT" << i << "IS" << lightLoc[i].x() << "," << lightLoc[i].y();
         light->setPos(lightLoc[i]);
         createLight(light);
     }
 }
 
+void Canvas::clear() {
+    m_robotManager->clear();
+    qDeleteAll(this->items());
+}
 
