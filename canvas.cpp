@@ -38,7 +38,7 @@ QVector<QPointF> Canvas::defaultBotLoc(int num) {
         QPointF point;
         point.setX(50 * (i+1));
         point.setY(50 * (i+1));
-        qDebug() << "POINT" << i << "is" << point.x() << "," << point.y();
+        qDebug() << "BOTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
     }
     return vec;
@@ -51,7 +51,7 @@ QVector<QPointF> Canvas::defaultLightLoc(int num) {
         QPointF point;
         point.setX(100 * (i+1));
         point.setY(100 * (i+1));
-        qDebug() << "POINT" << i << "is" << point.x() << "," << point.y();
+        qDebug() << "LIGHTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
     }
     return vec;
@@ -91,8 +91,8 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
     for (int i = 0; i < lights; i++)
     {
         light = new LightSource();
-        qDebug() << "LIGHT" << i << "IS" << lightLoc[i].x() << "," << lightLoc[i].y();
-        //light->setPos(lightLoc[i]);
+        //qDebug() << "LIGHT" << i << "IS" << lightLoc[i].x() << "," << lightLoc[i].y();
+        light->setPos(lightLoc[i]);
         createLight(light);
     }
 }
