@@ -107,7 +107,7 @@ int **mainWindow::kMatrix(QString kStr) {
 }
 
 void mainWindow::parseFile(int &bots, int &lights, QVector<QPointF> &botPos, QVector<QPointF> &lightPos, int **matrix) {
-    QString filename = QFileDialog::getOpenFileName(this, tr("Open File..."), "C:\\", tr("Files (*.*)"));
+
 }
 
 void mainWindow::setup() {
@@ -136,12 +136,42 @@ void mainWindow::reset() {
 }
 
 void mainWindow::loadFromFile() {
-    int bots , lights;
+    int bots, lights;
     QVector<QPointF> botPos, lightPos;
-    int **kmatrix;
-    parseFile(bots, lights, botPos, lightPos, kmatrix);
-    //scene->setup(bots, lights, botLoc(ui->botPos->toPlainText()),
-     //            lightLoc(ui->lightPos->toPlainText()), kMatrix(ui->kMatrix->toPlainText()));
+    int **kmatrix = new int*[2];
+    kmatrix[0] = new int[2];
+    kmatrix[1] = new int[2];
+    int x, y;
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open File..."), "C:\\", tr("Files (*.*)"));
+    //qDebug() << "FILENAME" << filename;
+    //qDebug() << "CHAR FILENAME" << filename.toStdString().c_str();
+    FILE *settings = fopen(filename.toStdString().c_str(), "r");
+    if (settings == NULL)
+        qDebug() << "ERROR OPENING FILE";
+    fseek (settings , 0 , SEEK_END);
+    //qDebug() << "FILE SIZE" << ftell(settings);
+    rewind(settings);
+    fscanf(settings, "%i\n", &bots);
+    fscanf(settings, "%i\n", &lights);
+    //qDebug() << "YOU HAVE" << bots << "ROBOTS";
+    //qDebug() << "YOU HAVE" << lights << "LIGHTS";
+    for (int i = 0; i < bots; i++)
+    {
+        fscanf(settings, "%i %i\n", &x, &y);
+        QPointF point = QPointF(x, y);
+        //qDebug() << "BOT POINT:" << point.x() << "," << point.y();
+        botPos.push_back(point);
+    }
+    for (int i = 0; i < lights; i++)
+    {
+        fscanf(settings, "%i %i\n", &x, &y);
+        QPointF point = QPointF(x, y);
+       // qDebug() << "LIGHT POINT:" << point.x() << "," << point.y();
+        lightPos.push_back(point);
+    }
+    fscanf(settings, "%i %i\n%i %i", &kmatrix[0][0], &kmatrix[0][1], &kmatrix[1][0], &kmatrix[1][1]);
+    fclose(settings);
+    scene->setup(bots, lights, botPos, lightPos, kmatrix);
     ui->numBots->setEnabled(false);
     ui->numLights->setEnabled(false);
     ui->kMatrix->setEnabled(false);
