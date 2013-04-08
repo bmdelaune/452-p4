@@ -6,8 +6,6 @@
 #include <QGraphicsView>
 #include "mainwindow.h"
 
-extern int axis_number;
-
 mainWindow::mainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -81,7 +79,7 @@ QVector<QPointF> mainWindow::lightLoc(QString posStr) {
     return vec;
 }
 int **mainWindow::kMatrix(QString kStr) {
-    int *matrix[2];
+    int **matrix = new int*[2];
     matrix[0] = new int[2];
     matrix[1] = new int[2];
    // QString kStr = ui->kMatrix->toPlainText();
@@ -90,8 +88,8 @@ int **mainWindow::kMatrix(QString kStr) {
     {
         qDebug() << "ERROR: Invalid matrix. Using the default (go towards the light).";
         matrix[0][0] = 0;
-        matrix[0][1] = 1;
-        matrix[1][0] = 1;
+        matrix[0][1] = 10;
+        matrix[1][0] = 10;
         matrix[1][1] = 0;
     }
     else

@@ -49,8 +49,8 @@ QVector<QPointF> Canvas::defaultLightLoc(int num) {
     for (int i = 0; i < num; i++)
     {
         QPointF point;
-        point.setX(100 * (i+1));
-        point.setY(100 * (i+1));
+        point.setX(400 * (i+1));
+        point.setY(400 * (i+1));
         qDebug() << "LIGHTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
     }
@@ -81,7 +81,7 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
         lightLoc = defaultLightLoc(lights);
         qDebug() << "ERROR: Not enough light locations. Using the default locations.";
     }
-    kmatrix = matrix;
+    m_robotManager->setKMatrix(matrix);
     Robot* robot;
     for(int i = 0; i < bots; i++) {
         robot = new Robot();
@@ -93,6 +93,8 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
     {
         light = new LightSource();
         light->setPos(lightLoc[i]);
+        // TODO: take intensity from a file
+        light->setIntensity(100);
         createLight(light);
     }
 }
@@ -104,6 +106,7 @@ void Canvas::clear() {
 
 void Canvas::move()
 {
+    m_robotManager->updateVelocities();
     m_robotManager->moveRobots();
 }
 

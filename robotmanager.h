@@ -15,13 +15,18 @@ public:
     void addRobot(Robot* robot) { robot->setId(m_robots.size()); m_robots.push_back(robot); }
 
     void addLight(LightSource* light) { light->setId(m_lights.size()); m_lights.push_back(light); }
-    double getIntensity(int id, Robot::Side side);
+    void updateVelocities();
+    double getIntensity(LightSource *light, Robot *robot, Robot::Side side);
     void clear();
     void moveRobots();
+
+    void setKMatrix(int** _kMatrix) {m_kmatrix = _kMatrix; }
 
 private:
     vector<Robot*> m_robots;
     vector<LightSource*> m_lights;
+
+    int** m_kmatrix;
 };
 
 #endif // ROBOTMANAGER_H

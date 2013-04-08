@@ -18,7 +18,7 @@ public:
     void setId(int id) { m_id = id; }
     int getId() { return m_id; }
     void setPos(QPointF pos);
-
+    QPointF getSensorPos(Side side);
     Sensor *getSensor(Side side);
     Wheel* getWheel(Side side);
 
