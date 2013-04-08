@@ -22,13 +22,15 @@ void Robot::paint(QPainter *painter,
     if (pixmap.isNull()) {
         painter->setBrush(Qt::transparent);
         painter->setPen(Qt::black);
-        qreal x = this->pos().x() - ROBOT_WIDTH/2;
-        qreal y = this->pos().y() - ROBOT_HEIGHT/2;
-        qDebug() << "TOP LEFT:" << x << "," << y;
         //painter->drawRect(x, y, ROBOT_WIDTH, ROBOT_HEIGHT);
         double theta = PI/2 - asin((getWheel(LEFT)->getLoc().y()-getWheel(RIGHT)->getLoc().y())/ROBOT_WIDTH);
-        QPointF frontLeft = QPointF(getWheel(LEFT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(LEFT)->getLoc().y()+ROBOT_HEIGHT*sin(theta)));
-        QPointF frontRight = QPointF(getWheel(RIGHT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(RIGHT)->getLoc().y()+ROBOT_HEIGHT*sin(theta)));
+        QPointF frontLeft = QPointF(getWheel(LEFT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(LEFT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
+        QPointF frontRight = QPointF(getWheel(RIGHT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(RIGHT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
+
+        qDebug() << "fL("<<frontLeft.x()<<","<<frontLeft.y()<<")";
+        qDebug() << "fR("<<frontRight.x()<<","<<frontRight.y()<<")";
+        qDebug() << "bL("<<getWheel(LEFT)->getLoc().x()<<","<<getWheel(LEFT)->getLoc().y()<<")";
+        qDebug() << "bR("<<getWheel(RIGHT)->getLoc().x()<<","<<getWheel(RIGHT)->getLoc().y()<<")";
         QPointF points[4] = {getWheel(LEFT)->getLoc(),
                                           frontLeft,
                                           frontRight,
@@ -44,7 +46,7 @@ void Robot::paint(QPainter *painter,
 void Robot::setPos(QPointF pos)
 {
     qDebug() << "("<<pos.x()<<","<<pos.y()<<")";
-    getWheel(LEFT)->setLoc(QPointF(pos.x()-ROBOT_WIDTH/2,pos.y()-ROBOT_HEIGHT/2));
+    getWheel(LEFT)->setLoc(QPointF(pos.x()-ROBOT_WIDTH/2,pos.y()+ROBOT_HEIGHT/2));
     getWheel(RIGHT)->setLoc(QPointF(pos.x()+ROBOT_WIDTH/2,pos.y()+ROBOT_HEIGHT/2));
 }
 
