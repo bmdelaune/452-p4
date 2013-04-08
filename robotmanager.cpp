@@ -44,6 +44,6 @@ void RobotManager::moveRobots(){
         current->getWheel(Robot::RIGHT)->setLoc(
                     QPointF(current->getWheel(Robot::RIGHT)->getLoc().x()+xR,
                             current->getWheel(Robot::RIGHT)->getLoc().y()+yR));
-        current->paint();
+        current->update(current->sceneBoundingRect());
     }
 }

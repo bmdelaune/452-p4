@@ -102,7 +102,8 @@ void Canvas::clear() {
     qDeleteAll(this->items());
 }
 
-void Canvas::move() {
-
+void Canvas::move()
+{
+    m_robotManager->moveRobots();
 }
 
