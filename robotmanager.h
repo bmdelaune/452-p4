@@ -17,6 +17,7 @@ public:
     void addLight(LightSource* light) { light->setId(m_lights.size()); m_lights.push_back(light); }
     double getIntensity(int id, Robot::Side side);
     void clear();
+    void moveRobots();
 
 private:
     vector<Robot*> m_robots;
