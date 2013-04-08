@@ -18,6 +18,7 @@ signals:
 public slots:
     void setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPointF> lightLoc, int **matrix);
     void clear();
+    void move();
 
 private:
     QVector<QPointF> defaultBotLoc(int num);

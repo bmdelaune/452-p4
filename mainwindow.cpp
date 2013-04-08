@@ -27,6 +27,7 @@ mainWindow::mainWindow(QWidget *parent) :
     connect(ui->setBtn, SIGNAL(clicked()), this, SLOT(setup()));
     connect(ui->resetBtn, SIGNAL(clicked()), this, SLOT(reset()));
     connect(ui->loadFile, SIGNAL(clicked()), this, SLOT(loadFromFile()));
+    connect(ui->moveBtn, SIGNAL(clicked()), scene, SLOT(move()));
 }
 
 mainWindow::~mainWindow()

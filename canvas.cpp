@@ -102,3 +102,7 @@ void Canvas::clear() {
     qDeleteAll(this->items());
 }
 
+void Canvas::move() {
+
+}
+
