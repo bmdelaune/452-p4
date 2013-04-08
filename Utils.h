@@ -4,6 +4,8 @@
 
 #define _USE_MATH_DEFINES
 
+#define PI 3.1415926535
+
 /* Utils */
 #define RAD_TO_DEG 180/M_PI
 #define DEG_TO_RAD M_PI/180

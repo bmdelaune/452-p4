@@ -33,11 +33,11 @@ void RobotManager::moveRobots(){
         double vR = current->getWheel(Robot::RIGHT)->getVelocity();
         double vL = current->getWheel(Robot::LEFT)->getVelocity();
         double r = ((vR*rw/2)-(vL*rw/2))/(vR-vL);
-        double theta = sL/(r+rw/2);
-        double xL = (r+rw/2)(1-cos(theta));
-        double yL = (r+rw/2)(sin(theta));
-        double xR = (r-rw/2)(1-cos(theta));
-        double yR = (r-rw/2)(sin(theta));
-
+        double theta = vL/(r+rw/2);
+        double xL = (r+rw/2)*(1-cos(theta));
+        double yL = (r+rw/2)*(sin(theta));
+        double xR = (r-rw/2)*(1-cos(theta));
+        double yR = (r-rw/2)*(sin(theta));
+        qDebug() << "Hey-O!";
     }
 }
