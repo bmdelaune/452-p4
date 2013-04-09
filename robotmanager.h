@@ -8,20 +8,22 @@
 
 using namespace std;
 
-class RobotManager
+class RobotManager : public QObject
 {
+    Q_OBJECT
 public:
 
-    RobotManager(QGraphicsItemAnimation* a);
+    RobotManager(QObject *parent = 0);
+    ~RobotManager() {}
     void addRobot(Robot* robot) { robot->setId(m_robots.size()); m_robots.push_back(robot); }
-
     void addLight(LightSource* light) { light->setId(m_lights.size()); m_lights.push_back(light); }
     void updateVelocities();
     double getIntensity(LightSource *light, Robot *robot, Robot::Side side);
-    void clear();
-    void moveRobots();
-
+    void clearMgr();
     void setKMatrix(int** _kMatrix) {m_kmatrix = _kMatrix; }
+
+public slots:
+    void moveRobots();
 
 private:
     vector<Robot*> m_robots;

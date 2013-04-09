@@ -2,9 +2,10 @@
 #include "Utils.h"
 #include <vector>
 #include <QDebug>
+#include <QTest>
 #include "robot.h"
 #include "lightsource.h"
-
+#include <QTimer>
 
 Canvas::Canvas(QObject *parent) :
     QGraphicsScene(parent)
@@ -40,7 +41,7 @@ QVector<QPointF> Canvas::defaultBotLoc(int num) {
         QPointF point;
         point.setX(50 * (i+1));
         point.setY(50 * (i+1));
-        qDebug() << "BOTLOC" << i << "is" << point.x() << "," << point.y();
+        //qDebug() << "BOTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
     }
     return vec;
@@ -53,7 +54,7 @@ QVector<QPointF> Canvas::defaultLightLoc(int num) {
         QPointF point;
         point.setX(400 * (i+1));
         point.setY(400 * (i+1));
-        qDebug() << "LIGHTLOC" << i << "is" << point.x() << "," << point.y();
+        //qDebug() << "LIGHTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
     }
     return vec;
@@ -63,32 +64,31 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
     if (bots == 0)
     {
         bots = 1;
-        qDebug() << "ERROR: Invalid number of robots. Defaulting to 1.";
+        //qDebug() << "ERROR: Invalid number of robots. Defaulting to 1.";
     }
     if (lights == 0)
     {
         lights = 1;
-        qDebug() << "ERROR: Invalid number of lights. Defaulting to 1.";
+        //qDebug() << "ERROR: Invalid number of lights. Defaulting to 1.";
     }
 
     if (botLoc.size() < bots)
     {
         botLoc.clear();
         botLoc = defaultBotLoc(bots);
-        qDebug() << "ERROR: Not enough robot locations. Using the default locations.";
+        //qDebug() << "ERROR: Not enough robot locations. Using the default locations.";
     }
     if (lightLoc.size() < bots)
     {
         lightLoc.clear();
         lightLoc = defaultLightLoc(lights);
-        qDebug() << "ERROR: Not enough light locations. Using the default locations.";
+        //qDebug() << "ERROR: Not enough light locations. Using the default locations.";
     }
     m_robotManager->setKMatrix(matrix);
     Robot* robot;
     for(int i = 0; i < bots; i++) {
         robot = new Robot();
         robot->setPos(botLoc[i]);
-        robot->setTransformOriginPoint(-0.5 * QPointF(ROBOT_WIDTH/2, ROBOT_HEIGHT/2));
         createRobot(robot);
     }
     LightSource *light;
@@ -103,13 +103,16 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
 }
 
 void Canvas::clear() {
-    m_robotManager->clear();
+    m_robotManager->clearMgr();
     qDeleteAll(this->items());
 }
 
 void Canvas::move()
 {
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), m_robotManager, SLOT(moveRobots()));
+    timer->start(100);
     //m_robotManager->updateVelocities();
-    m_robotManager->moveRobots();
+    //m_robotManager->moveRobots();
 }
 

@@ -2,10 +2,12 @@
 #include <math.h>
 #include <Utils.h>
 #include <QTimeLine>
+#include <QTest>
 
-RobotManager::RobotManager(QGraphicsItemAnimation* a)
+RobotManager::RobotManager(QObject *parent)
+    :QObject(parent)
 {
-    animation = a;
+    //animation = a;
 }
 
 /*
@@ -37,6 +39,8 @@ void RobotManager::updateVelocities()
         Robot* robot = m_robots[i];
         robot->getWheel(Robot::LEFT)->setVelocity(velocityLeft);
         robot->getWheel(Robot::RIGHT)->setVelocity(velocityRight);
+        qDebug() << "left" << robot->getWheel(Robot::LEFT)->getVelocity();
+        qDebug() << "right" << robot->getWheel(Robot::RIGHT)->getVelocity();
 
     }
 
@@ -56,71 +60,33 @@ double RobotManager::getIntensity(LightSource* light, Robot* robot, Robot::Side 
     return light->getIntensity() / distance ;
 }
 
-void RobotManager::clear() {
+void RobotManager::clearMgr() {
     m_robots.clear();
     m_lights.clear();
 }
 
 void RobotManager::moveRobots(){
 
-
-    /*QGraphicsView *view = new QGraphicsView(this);
-    QGraphicsScene *sc = new QGraphicsScene(this);
-    QPixmap f("house.png");
-    QGraphicsPixmapItem *first = sc->addPixmap(f);
-    QGraphicsPixmapItem *sec = sc->addPixmap(f);
-    //QPointF s(0.0, 148.0), e(689.0, 356.0);
-    QPointF s(0.0, 0.0), e(689.0, 356.0);
-
-    first->setPos(s);
-    sec->setPos(e);
-    view->setScene(sc);
-    showMaximized();
-
-    setCentralWidget((QWidget*)view);
-    view->show();
-
-    QGraphicsEllipseItem *data = new QGraphicsEllipseItem(s.x(), s.y(), 10, 10);
-    data->setPen(QPen(Qt::black));*/
-    //data->setBrush(QBrush(Qt::black, Qt:olidPattern));
-
-
-
-    QTimeLine *timer = new QTimeLine(10000);
-    timer->setFrameRange(0,10000);
-    timer->setEasingCurve(QEasingCurve::Linear);
-    Robot* robot = m_robots[0];
-    animation->setItem(robot);
-    animation->setTimeLine(timer);
-
-    for(int i =0;i<200;i++)
-    {
-        animation->setPosAt(i/200.0,QPointF(i,i));
-        animation->setRotationAt(i/200.0, i * 10);
-    }
-
-
-    //sc->addItem(data);
-    timer->start();
-
-
-    /* int rw = ROBOT_WIDTH;
+    qDebug() << "IN MOVEROBOTS";
+    int rw = ROBOT_WIDTH;
+    updateVelocities();
     for(int i = 0; i < m_robots.size(); i++){
         Robot* current = m_robots[i];
         double velRight = current->getWheel(Robot::RIGHT)->getVelocity();
         double velLeft = current->getWheel(Robot::LEFT)->getVelocity();
         double radius = ((velRight*rw/2)-(velLeft*rw/2))/(velRight-velLeft);
-        double theta = velLeft/(radius+rw/2);
-        double xL = (radius+rw/2)*(1-cos(theta));
-        double yL = (radius+rw/2)*(sin(theta));
-        double xR = (radius-rw/2)*(1-cos(theta));
-        double yR = (radius-rw/2)*(sin(theta));
-        current->getWheel(Robot::LEFT)->setLoc(
-                    QPointF(current->getWheel(Robot::LEFT)->getLoc().x()+xL,
-                            current->getWheel(Robot::LEFT)->getLoc().y()+yL));
-        current->getWheel(Robot::RIGHT)->setLoc(
-                    QPointF(current->getWheel(Robot::RIGHT)->getLoc().x()+xR,
-                            current->getWheel(Robot::RIGHT)->getLoc().y()+yR));
+        qDebug() << "RADIUS" << radius;
+        //double localTheta = velLeft/(radius+rw/2);
+        current->theta = (velLeft - velRight) * 100 / ROBOT_WIDTH + current->lastTheta;
+        double xR = (radius)*(1-cos(current->theta));
+        double yR = (radius)*(sin(current->theta));
+        double xL = (radius+rw/2)*(1-cos(current->theta));
+        double yL = (radius+rw/2)*(sin(current->theta));
+        current->getWheel(Robot::LEFT)->setLoc(QPointF(current->getWheel(Robot::LEFT)->getLoc().x()+xL,
+            current->getWheel(Robot::LEFT)->getLoc().y()+yL));
+        current->getWheel(Robot::RIGHT)->setLoc(QPointF(current->getWheel(Robot::RIGHT)->getLoc().x()+xR,
+            current->getWheel(Robot::RIGHT)->getLoc().y()+yR));
+        current->trigger = true;
         current->update(current->sceneBoundingRect());
-    }*/
+    }
 }
