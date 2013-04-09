@@ -88,8 +88,9 @@ void RobotManager::moveRobots(){
 
     QTimeLine *timer = new QTimeLine(10000);
     timer->setFrameRange(0,10000);
-
-    animation->setItem(m_robots[0]);
+    timer->setEasingCurve(QEasingCurve::Linear);
+    Robot* robot = m_robots[0];
+    animation->setItem(robot);
     animation->setTimeLine(timer);
 
     for(int i =0;i<200;i++)

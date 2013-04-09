@@ -109,7 +109,7 @@ void Canvas::clear() {
 
 void Canvas::move()
 {
-    m_robotManager->updateVelocities();
+    //m_robotManager->updateVelocities();
     m_robotManager->moveRobots();
 }
 

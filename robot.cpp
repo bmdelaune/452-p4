@@ -11,7 +11,8 @@ Robot::Robot(QGraphicsItem *parent)
 
 QRectF Robot::boundingRect() const
 {
-    return QRectF(ROBOT_WIDTH/2, ROBOT_HEIGHT/2, ROBOT_WIDTH, ROBOT_HEIGHT);
+
+    return QRectF(x(), y(), ROBOT_WIDTH, ROBOT_HEIGHT);
 }
 
 
@@ -24,7 +25,9 @@ void Robot::paint(QPainter *painter,
     if (pixmap.isNull()) {
         painter->setBrush(Qt::transparent);
         painter->setPen(Qt::black);
-        //painter->drawRect(x, y, ROBOT_WIDTH, ROBOT_HEIGHT);
+
+        //painter->drawRect(x(), y(), ROBOT_WIDTH, ROBOT_HEIGHT);
+        qDebug() << "RobotPos" << this->pos();
         double theta = PI/2 - asin((getWheel(LEFT)->getLoc().y()-getWheel(RIGHT)->getLoc().y())/ROBOT_WIDTH);
         //QPointF frontLeft = QPointF(getWheel(LEFT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(LEFT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
         //QPointF frontRight = QPointF(getWheel(RIGHT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(RIGHT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
@@ -54,17 +57,17 @@ void Robot::setPos(QPointF pos)
     getWheel(RIGHT)->setLoc(QPointF(pos.x()+ROBOT_WIDTH/2,pos.y()+ROBOT_HEIGHT/2));
 }
 
-/*QPointF Robot::calculateNewPosition(Robot* robot, double time)
+QPointF Robot::calculateNewPosition(Robot* robot, double time)
 {
     //The point in question is the location of the left wheel of the robot. This can be changed later
 
     // get current location values
-    Wheel leftWheel = robot->getWheel(LEFT);
-    Wheel rightWheel = robot->getWheel(RIGHT);
-    double xLocLeft = leftWheel->getLoc.x();
-    double yLocLeft = leftWheel->getLoc.y();
-    double xLocRight= rightWheel->getLoc.x();
-    double yLocRight = rightWheel->getLoc.y();
+    Wheel* leftWheel = getWheel(LEFT);
+    Wheel* rightWheel = getWheel(RIGHT);
+    double xLocLeft = leftWheel->getLoc().x();
+    double yLocLeft = leftWheel->getLoc().y();
+    double xLocRight = rightWheel->getLoc().x();
+    double yLocRight = rightWheel->getLoc().y();
     double dot_product = xLocLeft * xLocRight + yLocLeft * yLocRight;
     double magLeft = sqrt(pow(xLocLeft,2)+pow(yLocLeft,2));
     double magRight = sqrt(pow(xLocRight,2)+pow(yLocRight,2));
@@ -79,7 +82,7 @@ void Robot::setPos(QPointF pos)
 
     return QPointF(targetXLoc, targetYLoc);
 }
-*/
+
 QPointF Robot::getSensorPos(Robot::Side side)
 {
     double theta = PI/2 - asin((getWheel(LEFT)->getLoc().y()-getWheel(RIGHT)->getLoc().y())/ROBOT_WIDTH);
