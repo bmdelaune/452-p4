@@ -32,13 +32,15 @@ void Robot::paint(QPainter *painter,
         painter->setPen(Qt::black);
 
         // qDebug() << "RobotPos" << this->pos();
-        double theta = PI/2 - asin((getWheel(LEFT)->getLoc().y()-getWheel(RIGHT)->getLoc().y())/ROBOT_WIDTH);
+        //double theta = PI/2 - asin((getWheel(LEFT)->getLoc().y()-getWheel(RIGHT)->getLoc().y())/ROBOT_WIDTH);
         //QPointF frontLeft = QPointF(getWheel(LEFT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(LEFT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
         //QPointF frontRight = QPointF(getWheel(RIGHT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(RIGHT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
         QPointF frontLeft = getSensorPos(LEFT);
         QPointF frontRight = getSensorPos(RIGHT);
         painter->drawRect(0, 0, ROBOT_WIDTH, ROBOT_HEIGHT);
         painter->drawEllipse(0, 0, 5, 5);
+        painter->drawEllipse(ROBOT_WIDTH, 0, 5, 5);
+
         //this->setPos(QPointF(0, ROBOT_HEIGHT));
 /*
         qDebug() << "fL("<<frontLeft.x()<<","<<frontLeft.y()<<")";
@@ -56,15 +58,7 @@ void Robot::paint(QPainter *painter,
     }
 }
 
-void Robot::setPos(const QPointF& pos)
-{
-    QGraphicsWidget::setPos(pos);
-    // qDebug() << "("<<pos.x()<<","<<pos.y()<<")";
-    getWheel(LEFT)->setLoc(QPointF(pos.x()-ROBOT_WIDTH/2,pos.y()+ROBOT_HEIGHT/2));
-    getWheel(RIGHT)->setLoc(QPointF(pos.x()+ROBOT_WIDTH/2,pos.y()+ROBOT_HEIGHT/2));
-}
-
-QPointF Robot::calculateNewPosition(double time)
+QPointF Robot::calculateNewPosition(double t)
 {
     //The point in question is the location of the left wheel of the robot. This can be changed later
 
@@ -72,8 +66,6 @@ QPointF Robot::calculateNewPosition(double time)
     Wheel* leftWheel = getWheel(LEFT);
     Wheel* rightWheel = getWheel(RIGHT);
 
-    double xLocLeft = leftWheel->getLoc().x();
-    double yLocLeft = leftWheel->getLoc().y();
     /*double dot_product = xLocLeft * xLocRight + yLocLeft * yLocRight;
     double magLeft = sqrt(pow(xLocLeft,2)+pow(yLocLeft,2));
     double magRight = sqrt(pow(xLocRight,2)+pow(yLocRight,2));
@@ -81,34 +73,77 @@ QPointF Robot::calculateNewPosition(double time)
 
     double velLeft = leftWheel->getVelocity();
     double velRight = rightWheel->getVelocity();
+    double x = pos().x();
+    double y = pos().y();
+    double theta0 = m_theta * DEG_TO_RAD;
+
     double targetXLoc = 0;
     double targetYLoc = 0;
-    double theta = (velLeft - velRight) * time / ROBOT_WIDTH + m_theta * DEG_TO_RAD;
+
+    double R = ROBOT_WIDTH/2.0 * (velLeft + velRight) / (velRight - velLeft);
+    double angVel = (velRight - velLeft)/ROBOT_WIDTH;
+
+    double iccX = x - R*sin(theta0);
+    double iccY = y - R*cos(theta0);
+
+    double coswt = cos(angVel*t);
+    double sinwt = sin(angVel*t);
+
+    double xp = (x-iccX)*coswt - (y-iccY)*sinwt + iccX - x;
+    double yp = (x-iccX)*sinwt + (y-iccY)*coswt + iccY - y;
+    double tp = theta0 + angVel*t;
+
+    m_theta = tp * RAD_TO_DEG;
+    /*
+    double theta0 = m_theta * DEG_TO_RAD;
+    double theta = (velRight - velLeft) * time / ROBOT_WIDTH + theta0;
 
     m_theta = theta * RAD_TO_DEG;
-    targetXLoc += ROBOT_WIDTH*((velRight+velLeft)/(2*(velRight-velLeft)))*(sin((velRight-velLeft)*time/ROBOT_WIDTH+theta)-sin(theta));
-    targetYLoc += ROBOT_WIDTH*((velRight+velLeft)/(2*(velRight-velLeft)))*(cos((velRight-velLeft)*time/ROBOT_WIDTH+theta)-cos(theta));
+    targetXLoc += ROBOT_WIDTH*((velRight+velLeft)/(2*(velRight-velLeft)))*
+                                (sin((velRight-velLeft)*time/ROBOT_WIDTH+ theta0)-sin(theta0));
 
-    return QPointF(targetXLoc, targetYLoc);
+    targetYLoc -= ROBOT_WIDTH*((velRight+velLeft)/(2*(velRight-velLeft)))*
+                                (cos((velRight-velLeft)*time/ROBOT_WIDTH+theta0)-cos(theta0));
+
+    */
+    qDebug() << "velocities" << velLeft << velRight;
+    qDebug() << "theta" << tp;
+    qDebug() << "m_theta" << m_theta;
+    qDebug() << QPointF(xp, yp);
+
+    return QPointF(xp, yp);
 }
 
 QPointF Robot::getSensorPos(Robot::Side side)
 {
-    QPointF leftWheel = mapToScene(getWheel(LEFT)->getLoc());
-    QPointF rightWheel = mapToScene(getWheel(RIGHT)->getLoc());
-    // qDebug() << "left wheel: " << leftWheel << mapFromScene(leftWheel);
-    // qDebug() << "right wheel: " << rightWheel << mapFromScene(rightWheel);
+    //qDebug() << "ROBOT: " << m_id;
 
+    // theta is from 0 going up physically, while rotation goes the opposite
+    double theta = -1*rotation();
+    // Calculate the whole rectangle
+    // #YOLO
+    QPointF leftWheel = pos(); // left wheel is the pos() of the object
+    QPointF rightWheel = QPointF(ROBOT_WIDTH * cos (theta*DEG_TO_RAD),
+                                 ROBOT_WIDTH * sin (-1*theta * DEG_TO_RAD)) + leftWheel;
 
-    double theta = /*PI/2*/ asin((rightWheel.y() - leftWheel.y())/ROBOT_WIDTH);// + 2*PI;
-    double xComp = ROBOT_HEIGHT * sin(theta) + side * ROBOT_WIDTH;
-    double yComp = ROBOT_HEIGHT * cos(theta);
-    qDebug() << "Robot: " << m_id;
-    qDebug() << "offset: " << QPointF(xComp, yComp) ;
+    QPointF leftSensor = QPointF(ROBOT_HEIGHT * sin (theta*DEG_TO_RAD),
+                                 ROBOT_HEIGHT* cos (theta * DEG_TO_RAD)) + leftWheel;
 
-    QPointF point((pos() + QPointF(xComp, yComp)));
+    QPointF rightSensor = QPointF(ROBOT_HEIGHT * sin (theta*DEG_TO_RAD),
+                                 ROBOT_HEIGHT* cos (theta * DEG_TO_RAD)) + rightWheel;
 
-    qDebug() << "sensor: " << side << point << this->mapToScene(point) << "angle" << theta * RAD_TO_DEG;
+/*
+    qDebug() << "left wheel: " << leftWheel << mapFromScene(leftWheel);
+    qDebug() << "right wheel: " << rightWheel << mapFromScene(rightWheel);
+    qDebug() << "left sensor: " << leftSensor;
+    qDebug() << "right sensor: " << rightSensor;
+
+    qDebug() << "fig rotation: " << rotation() ;
+    qDebug() << "theta" << theta;
+*/
+    QPointF point = (side == LEFT) ? leftSensor : rightSensor;
+
+    // qDebug() << "sensor: " << side << point << this->mapToScene(point) << "angle" << theta * RAD_TO_DEG;
     return point;
 }
 

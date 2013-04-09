@@ -46,10 +46,10 @@ void RobotManager::updateVelocities()
 // get intensity from sensor left/right
 double RobotManager::getIntensity(LightSource* light, Robot* robot, Robot::Side side)
 {
-    QPointF sensorPos = robot->mapToScene(robot->getSensorPos(side));
-    // qDebug() << "Sensor Pos:" << sensorPos << robot->mapToScene(robot->getSensorPos(side));
+    QPointF sensorPos = robot->getSensorPos(side);
+    qDebug() << "Sensor Pos:" << sensorPos << robot->mapToScene(robot->getSensorPos(side));
     QPointF lightPos = light->pos();
-    // qDebug() << "light Pos:" << lightPos << light->mapToScene(lightPos);
+    qDebug() << "light Pos:" << lightPos << light->mapToScene(lightPos);
 
     double diffX = sensorPos.x() - lightPos.x();
     double diffY = sensorPos.y() - lightPos.y();
@@ -72,6 +72,7 @@ void RobotManager::moveRobots() {
     QPropertyAnimation *rotAnimation;
     Robot* robot;
     for (int i=0; i<m_robots.size(); i++){
+        qDebug() << "ROBOT" << i;
         robot = m_robots[i];
 
         posAnimation = new QPropertyAnimation(robot, "pos");
@@ -83,7 +84,7 @@ void RobotManager::moveRobots() {
         qDebug() << "Pos: " << robot->pos() << offset;
 
         posAnimation->setStartValue(robot->pos());
-        posAnimation->setEndValue(robot->calculateNewPosition(10) + robot->pos());
+        posAnimation->setEndValue(offset + robot->pos());
         qDebug() << "Angle: " << robot->rotation() << robot->getTheta();
         rotAnimation->setDuration(1000);
         rotAnimation->setEasingCurve(QEasingCurve::Linear);
@@ -92,9 +93,9 @@ void RobotManager::moveRobots() {
 
         m_animations->addAnimation(posAnimation);
         m_animations->addAnimation(rotAnimation);
-
+        qDebug();
     }
-
+    //QObject::connect(m_animations, SIGNAL(finished()), m_canvas, SLOT(Canvas::move()));
     m_animations->start();
     /* int rw = ROBOT_WIDTH;
     for(int i = 0; i < m_robots.size(); i++){

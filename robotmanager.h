@@ -8,6 +8,8 @@
 
 using namespace std;
 
+class Canvas;
+
 class RobotManager
 {
 public:
@@ -21,12 +23,13 @@ public:
     void clear();
     void moveRobots();
     void setKMatrix(int** _kMatrix) {m_kmatrix = _kMatrix; }
-
+    void setCanvas(Canvas* canvas) { m_canvas = canvas; }
 private:
     vector<Robot*> m_robots;
     vector<LightSource*> m_lights;
     QParallelAnimationGroup* m_animations;
     int** m_kmatrix;
+    Canvas* m_canvas;
 
 };
 

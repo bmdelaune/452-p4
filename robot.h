@@ -19,13 +19,12 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
     void setId(int id) { m_id = id; }
     int getId() { return m_id; }
-    //void setPos(QPointF pos);
+
     QPointF getSensorPos(Side side);
     Sensor *getSensor(Side side);
     double getTheta() { return m_theta; }
     Wheel* getWheel(Side side);
-    QPointF calculateNewPosition(double time);
-    void setPos(const QPointF &pos);
+    QPointF calculateNewPosition(double t);
 
 private:
     int m_id;

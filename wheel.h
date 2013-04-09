@@ -9,11 +9,8 @@ public:
     Wheel();
     double getVelocity();
     void setVelocity(double);
-    QPointF getLoc();
-    void setLoc(QPointF);
 private:
     double velocity;
-    QPointF loc;
 };
 
 #endif // WHEEL_H

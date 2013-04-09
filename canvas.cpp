@@ -21,7 +21,7 @@ void Canvas::initialize(){
 
 
     m_robotManager = new RobotManager();
-    // m_robotManager->setCanvas(this);
+    m_robotManager->setCanvas(this);
    /* LightSource* lightSource = new LightSource();
     m_robotManager->setLightSource(lightSource);
     this->addItem(lightSource);*/
@@ -44,7 +44,7 @@ QVector<QPointF> Canvas::defaultBotLoc(int num) {
     for (int i = 0; i < num; i++)
     {
         QPointF point;
-        point.setX(100 * (i+1));
+        point.setX(100 * (i+1) + 500);
         point.setY(100 * (i+1));
         qDebug() << "BOTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
@@ -118,7 +118,8 @@ void Canvas::clear() {
 
 void Canvas::move()
 {
-    m_robotManager->updateVelocities();
-    m_robotManager->moveRobots();
-}
 
+        m_robotManager->updateVelocities();
+        m_robotManager->moveRobots();
+
+}
