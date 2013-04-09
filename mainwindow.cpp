@@ -89,8 +89,8 @@ int **mainWindow::kMatrix(QString kStr) {
     {
         qDebug() << "ERROR: Invalid matrix. Using the default (go towards the light).";
         matrix[0][0] = 0;
-        matrix[0][1] = 10;
-        matrix[1][0] = 10;
+        matrix[0][1] = 30;
+        matrix[1][0] = 30;
         matrix[1][1] = 0;
     }
     else

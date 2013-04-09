@@ -81,8 +81,8 @@ QPointF Robot::calculateNewPosition(double dt)
 
     double R = (ROBOT_WIDTH/2.0 * (velLeft + velRight) / (velRight - velLeft));
     double w = (velRight - velLeft)/ROBOT_WIDTH;
-    qDebug() << "w" << w;
-    qDebug() << "R" << R;
+    //qDebug() << "w" << w;
+    //qDebug() << "R" << R;
     double iccX = x - R*sin(theta0);
     double iccY = y - R*cos(theta0);
 
@@ -108,10 +108,10 @@ QPointF Robot::calculateNewPosition(double dt)
                                 (cos((velRight-velLeft)*time/ROBOT_WIDTH+theta0)-cos(theta0));
 
     */
-    qDebug() << "velocities" << velLeft << velRight << "Iccx,y: " << iccX << iccY;
-    qDebug() << "Pos:" << pos() << "coswt,sinwt:" << coswt << sinwt;
-    qDebug() << "m_theta" << m_theta;
-    qDebug() << QPointF(xp, yp);
+    //qDebug() << "velocities" << velLeft << velRight << "Iccx,y: " << iccX << iccY;
+    //qDebug() << "Pos:" << pos() << "coswt,sinwt:" << coswt << sinwt;
+    //qDebug() << "m_theta" << m_theta;
+    //qDebug() << QPointF(xp, yp);
 
     return QPointF(-1*yp, -1*xp);
 }

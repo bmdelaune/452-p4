@@ -86,21 +86,20 @@ void RobotManager::moveRobots() {
     QPropertyAnimation *rotAnimation;
     Robot* robot;
     for (int i=0; i<m_robots.size(); i++){
-        qDebug() << "ROBOT" << i;
         robot = m_robots[i];
 
         posAnimation = new QPropertyAnimation(robot, "pos");
         rotAnimation = new QPropertyAnimation(robot, "rotation");
 
-        posAnimation->setDuration(1000);
+        posAnimation->setDuration(500);
         posAnimation->setEasingCurve(QEasingCurve::Linear);
-        QPointF offset = robot->calculateNewPosition(2);
+        QPointF offset = robot->calculateNewPosition(1);
         // qDebug() << "Pos: " << robot->pos() << offset;
 
         posAnimation->setStartValue(robot->pos());
         posAnimation->setEndValue(offset + robot->pos());
         // qDebug() << "Angle: " << robot->rotation() << robot->getTheta();
-        rotAnimation->setDuration(1000);
+        rotAnimation->setDuration(500);
         rotAnimation->setEasingCurve(QEasingCurve::Linear);
         rotAnimation->setStartValue(robot->rotation());
         rotAnimation->setEndValue( robot->getTheta());

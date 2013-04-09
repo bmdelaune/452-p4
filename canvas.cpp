@@ -4,7 +4,7 @@
 #include <QDebug>
 #include "robot.h"
 #include "lightsource.h"
-
+#include <time.h>
 
 Canvas::Canvas(QObject *parent) :
     QGraphicsScene(parent)
@@ -40,13 +40,14 @@ void Canvas::createLight(LightSource *light)
 }
 
 QVector<QPointF> Canvas::defaultBotLoc(int num) {
+    srand (time(NULL));
     QVector<QPointF> vec;
     for (int i = 0; i < num; i++)
     {
         QPointF point;
-        point.setX(100 * (i+1) +500);
-        point.setY(100 * (i+1));
-        qDebug() << "BOTLOC" << i << "is" << point.x() << "," << point.y();
+        point.setX(rand() % 700 + 20);
+        point.setY(rand() % 500 + 20);
+        // qDebug() << "BOTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
     }
     return vec;
@@ -57,8 +58,8 @@ QVector<QPointF> Canvas::defaultLightLoc(int num) {
     for (int i = 0; i < num; i++)
     {
         QPointF point;
-        point.setX(400 * (i+1));
-        point.setY(400 * (i+1));
+        point.setX(rand() % 700 + 20);
+        point.setY(rand() % 500 + 20);
         qDebug() << "LIGHTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
     }
