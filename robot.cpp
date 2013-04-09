@@ -12,7 +12,8 @@ Robot::Robot(QGraphicsItem *parent)
 QRectF Robot::boundingRect() const
 {
 
-    return QRectF(x(), y(), ROBOT_WIDTH, ROBOT_HEIGHT);
+    qDebug() << "origin in BR()" << transformOriginPoint();
+    return QRectF(0, 0, 800, 600);
 }
 
 
@@ -26,13 +27,13 @@ void Robot::paint(QPainter *painter,
         painter->setBrush(Qt::transparent);
         painter->setPen(Qt::black);
 
-        //painter->drawRect(x(), y(), ROBOT_WIDTH, ROBOT_HEIGHT);
         qDebug() << "RobotPos" << this->pos();
         double theta = PI/2 - asin((getWheel(LEFT)->getLoc().y()-getWheel(RIGHT)->getLoc().y())/ROBOT_WIDTH);
         //QPointF frontLeft = QPointF(getWheel(LEFT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(LEFT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
         //QPointF frontRight = QPointF(getWheel(RIGHT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(RIGHT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
         QPointF frontLeft = getSensorPos(LEFT);
         QPointF frontRight = getSensorPos(RIGHT);
+        painter->drawRect(0, 0, ROBOT_WIDTH, ROBOT_HEIGHT);
 
 /*
         qDebug() << "fL("<<frontLeft.x()<<","<<frontLeft.y()<<")";
@@ -41,8 +42,8 @@ void Robot::paint(QPainter *painter,
         qDebug() << "bR("<<getWheel(RIGHT)->getLoc().x()<<","<<getWheel(RIGHT)->getLoc().y()<<")";
 
         */
-        QPointF points[4] = {frontRight, frontLeft, getWheel(LEFT)->getLoc(), getWheel(RIGHT)->getLoc()};
-        painter->drawPolygon(points,4);
+        //QPointF points[4] = {frontRight, frontLeft, getWheel(LEFT)->getLoc(), getWheel(RIGHT)->getLoc()};
+        //painter->drawPolygon(points,4);
 
     } else {
         painter->scale(.2272, .2824);

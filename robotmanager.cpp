@@ -85,22 +85,24 @@ void RobotManager::moveRobots(){
     //data->setBrush(QBrush(Qt::black, Qt:olidPattern));
 
 
-
-    QTimeLine *timer = new QTimeLine(10000);
-    timer->setFrameRange(0,10000);
-    timer->setEasingCurve(QEasingCurve::Linear);
     Robot* robot = m_robots[0];
+    qDebug() << "origin" << robot->transformOriginPoint();
+    QTimeLine *timer = new QTimeLine;
+    timer->setEasingCurve(QEasingCurve::Linear);
     animation->setItem(robot);
     animation->setTimeLine(timer);
 
-    for(int i =0;i<200;i++)
-    {
-        animation->setPosAt(i/200.0,QPointF(i,i));
-        animation->setRotationAt(i/200.0, 10*i);
-    }
+
+    animation->setPosAt(0,robot->pos());
+    animation->setPosAt(1, robot->pos() + QPointF(400,400));
+    animation->setRotationAt(0, robot->rotation());
+    animation->setRotationAt(1, robot->rotation() + 200);
+
+    timer->setUpdateInterval(20);
+    timer->setLoopCount(1);
+    timer->setDuration(2000);
 
 
-    //sc->addItem(data);
     timer->start();
 
 
