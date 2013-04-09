@@ -4,8 +4,17 @@
 #include <QTimeLine>
 #include <QPropertyAnimation>
 
+RobotManager::~RobotManager() {
 
-RobotManager::RobotManager()
+}
+
+void RobotManager::startAnimation()
+{
+    updateVelocities();
+    moveRobots();
+}
+
+RobotManager::RobotManager(QObject *parent)
 {
 }
 
@@ -80,7 +89,7 @@ void RobotManager::moveRobots() {
 
         posAnimation->setDuration(1000);
         posAnimation->setEasingCurve(QEasingCurve::Linear);
-        QPointF offset = robot->calculateNewPosition(10);
+        QPointF offset = robot->calculateNewPosition(2);
         qDebug() << "Pos: " << robot->pos() << offset;
 
         posAnimation->setStartValue(robot->pos());
@@ -95,7 +104,7 @@ void RobotManager::moveRobots() {
         m_animations->addAnimation(rotAnimation);
         qDebug();
     }
-    //QObject::connect(m_animations, SIGNAL(finished()), m_canvas, SLOT(Canvas::move()));
+    QObject::connect(m_animations, SIGNAL(finished()), this, SLOT(startAnimation()));
     m_animations->start();
     /* int rw = ROBOT_WIDTH;
     for(int i = 0; i < m_robots.size(); i++){

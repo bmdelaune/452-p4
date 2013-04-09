@@ -5,16 +5,23 @@
 #include "robot.h"
 #include "lightsource.h"
 #include <QParallelAnimationGroup>
+#include <QObject>
 
 using namespace std;
 
 class Canvas;
 
-class RobotManager
+class RobotManager : public QObject
 {
-public:
+    Q_OBJECT
 
-    RobotManager();
+signals:
+
+public slots:
+    void startAnimation();
+public:
+    explicit RobotManager (QObject *parent = 0);
+    ~RobotManager();
     void addRobot(Robot* robot) { robot->setId(m_robots.size()); m_robots.push_back(robot); }
 
     void addLight(LightSource* light) { light->setId(m_lights.size()); m_lights.push_back(light); }
