@@ -11,7 +11,8 @@ Robot::Robot(QGraphicsItem *parent)
 
 QRectF Robot::boundingRect() const
 {
-    return QRectF(ROBOT_WIDTH/2, ROBOT_HEIGHT/2, ROBOT_WIDTH, ROBOT_HEIGHT);
+
+    return QRectF(x(), y(), ROBOT_WIDTH, ROBOT_HEIGHT);
 }
 
 
@@ -24,7 +25,9 @@ void Robot::paint(QPainter *painter,
     if (pixmap.isNull()) {
         painter->setBrush(Qt::transparent);
         painter->setPen(Qt::black);
-        //painter->drawRect(x, y, ROBOT_WIDTH, ROBOT_HEIGHT);
+
+        //painter->drawRect(x(), y(), ROBOT_WIDTH, ROBOT_HEIGHT);
+        qDebug() << "RobotPos" << this->pos();
         double theta = PI/2 - asin((getWheel(LEFT)->getLoc().y()-getWheel(RIGHT)->getLoc().y())/ROBOT_WIDTH);
         //QPointF frontLeft = QPointF(getWheel(LEFT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(LEFT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
         //QPointF frontRight = QPointF(getWheel(RIGHT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(RIGHT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));

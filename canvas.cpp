@@ -88,6 +88,8 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
     for(int i = 0; i < bots; i++) {
         robot = new Robot();
         robot->setPos(botLoc[i]);
+
+        //robot->setTransformOriginPoint(-.5 * QPointF(ROBOT_WIDTH/2.0, ROBOT_HEIGHT/2.0));
         createRobot(robot);
     }
     LightSource *light;
@@ -108,7 +110,7 @@ void Canvas::clear() {
 
 void Canvas::move()
 {
-    m_robotManager->updateVelocities();
+    //m_robotManager->updateVelocities();
     m_robotManager->moveRobots();
 }
 
