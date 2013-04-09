@@ -19,11 +19,12 @@ signals:
 
 public slots:
     void startAnimation();
+
 public:
     explicit RobotManager (QObject *parent = 0);
     ~RobotManager();
     void addRobot(Robot* robot) { robot->setId(m_robots.size()); m_robots.push_back(robot); }
-
+    void stopAnimation();
     void addLight(LightSource* light) { light->setId(m_lights.size()); m_lights.push_back(light); }
     void updateVelocities();
     double getIntensity(LightSource *light, Robot *robot, Robot::Side side);
@@ -37,7 +38,7 @@ private:
     QParallelAnimationGroup* m_animations;
     int** m_kmatrix;
     Canvas* m_canvas;
-
+    bool m_stop;
 };
 
 #endif // ROBOTMANAGER_H

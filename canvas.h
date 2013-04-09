@@ -16,11 +16,13 @@ public:
     void initialize();
 
 signals:
+    void stopAnimation();
 
 public slots:
     void setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPointF> lightLoc, int **matrix);
     void clear();
     void move();
+    void stop();
 
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

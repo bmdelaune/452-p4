@@ -10,8 +10,16 @@ RobotManager::~RobotManager() {
 
 void RobotManager::startAnimation()
 {
-    updateVelocities();
-    moveRobots();
+    if (!m_stop) {
+        updateVelocities();
+        moveRobots();
+    }
+    m_stop = false;
+}
+
+void RobotManager::stopAnimation()
+{
+    m_stop = true;
 }
 
 RobotManager::RobotManager(QObject *parent)

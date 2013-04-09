@@ -22,7 +22,7 @@ void LightSource::paint(QPainter *painter,
      Q_UNUSED(widget);
      if (m_pixmap.isNull()) {
          painter->setBrush(Qt::yellow);
-         painter->drawEllipse(0, 0, LIGHT_SOURCE_RADIUS, LIGHT_SOURCE_RADIUS);
+         painter->drawEllipse(-LIGHT_SOURCE_RADIUS/2, LIGHT_SOURCE_RADIUS/2, LIGHT_SOURCE_RADIUS, LIGHT_SOURCE_RADIUS);
      } else {
          painter->scale(.2272, .2824);
          painter->drawPixmap(QPointF(-15 * 4.4, -50 * 3.54), m_pixmap);

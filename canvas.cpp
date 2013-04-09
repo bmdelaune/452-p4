@@ -120,3 +120,8 @@ void Canvas::move()
     m_robotManager->startAnimation();
 
 }
+
+void Canvas::stop()
+{
+    m_robotManager->stopAnimation();
+}

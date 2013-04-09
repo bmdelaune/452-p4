@@ -16,8 +16,7 @@ Robot::~Robot() {
 
 QRectF Robot::boundingRect() const
 {
-
-    return QRectF(0, 0, 800, 600);
+    return QRectF(-ROBOT_WIDTH, 0, ROBOT_WIDTH*2, ROBOT_HEIGHT);
 }
 
 
@@ -37,9 +36,9 @@ void Robot::paint(QPainter *painter,
         //QPointF frontRight = QPointF(getWheel(RIGHT)->getLoc().x()+ROBOT_HEIGHT*cos(theta),(getWheel(RIGHT)->getLoc().y()-ROBOT_HEIGHT*sin(theta)));
         QPointF frontLeft = getSensorPos(LEFT);
         QPointF frontRight = getSensorPos(RIGHT);
-        painter->drawRect(0, 0, ROBOT_WIDTH, ROBOT_HEIGHT);
-        painter->drawEllipse(-5, 0, 5, 10);
-        painter->drawEllipse(ROBOT_WIDTH, 0, 5, 10);
+        painter->drawRect(-ROBOT_WIDTH/2, 0, ROBOT_WIDTH, ROBOT_HEIGHT);
+        painter->drawEllipse(-5 -ROBOT_WIDTH/2 , 0, 5, 10);
+        painter->drawEllipse(ROBOT_WIDTH -ROBOT_WIDTH/2, 0, 5, 10);
 
         //this->setPos(QPointF(0, ROBOT_HEIGHT));
 /*
@@ -107,7 +106,7 @@ QPointF Robot::calculateNewPosition(double t)
 
     */
     qDebug() << "velocities" << velLeft << velRight;
-    qDebug() << "theta" << tp;
+    qDebug() << "Pos:" << pos();
     qDebug() << "m_theta" << m_theta;
     qDebug() << QPointF(xp, yp);
 
