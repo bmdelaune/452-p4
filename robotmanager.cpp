@@ -95,6 +95,7 @@ void RobotManager::moveRobots(){
     for(int i =0;i<200;i++)
     {
         animation->setPosAt(i/200.0,QPointF(i,i));
+        animation->setRotationAt(i/200.0, 10*i);
     }
 
 
