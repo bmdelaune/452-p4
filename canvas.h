@@ -31,6 +31,7 @@ private:
     QBrush paintBrush;
     QPen paintPen;
 
+
     int **kmatrix;
     RobotManager* m_robotManager;
 };

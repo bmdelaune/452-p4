@@ -24,7 +24,7 @@ public:
 
 private:
     int m_id;
-
+   // QPointF calculateNewPosition(Robot* robot, double time);
     QPixmap pixmap;
     Sensor* m_leftSensor;
     Sensor* m_rightSensor;

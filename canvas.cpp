@@ -12,8 +12,10 @@ Canvas::Canvas(QObject *parent) :
 }
 
 void Canvas::initialize(){
-    m_robotManager = new RobotManager();
 
+
+    QGraphicsItemAnimation* animation = new QGraphicsItemAnimation(this);
+     m_robotManager = new RobotManager(animation);
    /* LightSource* lightSource = new LightSource();
     m_robotManager->setLightSource(lightSource);
     this->addItem(lightSource);*/

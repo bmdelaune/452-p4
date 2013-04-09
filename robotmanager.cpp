@@ -1,10 +1,11 @@
 #include "robotmanager.h"
 #include <math.h>
 #include <Utils.h>
+#include <QTimeLine>
 
-
-RobotManager::RobotManager()
+RobotManager::RobotManager(QGraphicsItemAnimation* a)
 {
+    animation = a;
 }
 
 /*
@@ -61,7 +62,47 @@ void RobotManager::clear() {
 }
 
 void RobotManager::moveRobots(){
-    int rw = ROBOT_WIDTH;
+
+
+    /*QGraphicsView *view = new QGraphicsView(this);
+    QGraphicsScene *sc = new QGraphicsScene(this);
+    QPixmap f("house.png");
+    QGraphicsPixmapItem *first = sc->addPixmap(f);
+    QGraphicsPixmapItem *sec = sc->addPixmap(f);
+    //QPointF s(0.0, 148.0), e(689.0, 356.0);
+    QPointF s(0.0, 0.0), e(689.0, 356.0);
+
+    first->setPos(s);
+    sec->setPos(e);
+    view->setScene(sc);
+    showMaximized();
+
+    setCentralWidget((QWidget*)view);
+    view->show();
+
+    QGraphicsEllipseItem *data = new QGraphicsEllipseItem(s.x(), s.y(), 10, 10);
+    data->setPen(QPen(Qt::black));*/
+    //data->setBrush(QBrush(Qt::black, Qt:olidPattern));
+
+
+
+    QTimeLine *timer = new QTimeLine(10000);
+    timer->setFrameRange(0,10000);
+
+    animation->setItem(m_robots[0]);
+    animation->setTimeLine(timer);
+
+    for(int i =0;i<200;i++)
+    {
+        animation->setPosAt(i/200.0,QPointF(i,i));
+    }
+
+
+    //sc->addItem(data);
+    timer->start();
+
+
+    /* int rw = ROBOT_WIDTH;
     for(int i = 0; i < m_robots.size(); i++){
         Robot* current = m_robots[i];
         double velRight = current->getWheel(Robot::RIGHT)->getVelocity();
@@ -79,5 +120,5 @@ void RobotManager::moveRobots(){
                     QPointF(current->getWheel(Robot::RIGHT)->getLoc().x()+xR,
                             current->getWheel(Robot::RIGHT)->getLoc().y()+yR));
         current->update(current->sceneBoundingRect());
-    }
+    }*/
 }
