@@ -57,7 +57,7 @@ void Robot::paint(QPainter *painter,
     }
 }
 
-QPointF Robot::calculateNewPosition(double t)
+QPointF Robot::calculateNewPosition(double dt)
 {
     //The point in question is the location of the left wheel of the robot. This can be changed later
 
@@ -79,18 +79,21 @@ QPointF Robot::calculateNewPosition(double t)
     double targetXLoc = 0;
     double targetYLoc = 0;
 
-    double R = ROBOT_WIDTH/2.0 * (velLeft + velRight) / (velRight - velLeft);
-    double angVel = (velRight - velLeft)/ROBOT_WIDTH;
-
+    double R = (ROBOT_WIDTH/2.0 * (velLeft + velRight) / (velRight - velLeft));
+    double w = (velRight - velLeft)/ROBOT_WIDTH;
+    qDebug() << "w" << w;
+    qDebug() << "R" << R;
     double iccX = x - R*sin(theta0);
     double iccY = y - R*cos(theta0);
 
-    double coswt = cos(angVel*t);
-    double sinwt = sin(angVel*t);
+    double coswt = cos(w*dt);
+    double sinwt = sin(w*dt);
+
+
 
     double xp = (x-iccX)*coswt - (y-iccY)*sinwt + iccX - x;
     double yp = (x-iccX)*sinwt + (y-iccY)*coswt + iccY - y;
-    double tp = theta0 + angVel*t;
+    double tp = theta0 + w*dt;
 
     m_theta = tp * RAD_TO_DEG;
     /*
@@ -105,12 +108,12 @@ QPointF Robot::calculateNewPosition(double t)
                                 (cos((velRight-velLeft)*time/ROBOT_WIDTH+theta0)-cos(theta0));
 
     */
-    qDebug() << "velocities" << velLeft << velRight;
-    qDebug() << "Pos:" << pos();
+    qDebug() << "velocities" << velLeft << velRight << "Iccx,y: " << iccX << iccY;
+    qDebug() << "Pos:" << pos() << "coswt,sinwt:" << coswt << sinwt;
     qDebug() << "m_theta" << m_theta;
     qDebug() << QPointF(xp, yp);
 
-    return QPointF(xp, yp);
+    return QPointF(-1*yp, -1*xp);
 }
 
 QPointF Robot::getSensorPos(Robot::Side side)

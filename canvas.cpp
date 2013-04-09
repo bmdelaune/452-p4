@@ -44,7 +44,7 @@ QVector<QPointF> Canvas::defaultBotLoc(int num) {
     for (int i = 0; i < num; i++)
     {
         QPointF point;
-        point.setX(100 * (i+1) + 500);
+        point.setX(100 * (i+1) +500);
         point.setY(100 * (i+1));
         qDebug() << "BOTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
