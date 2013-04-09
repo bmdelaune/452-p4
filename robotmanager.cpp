@@ -2,10 +2,11 @@
 #include <math.h>
 #include <Utils.h>
 #include <QTimeLine>
+#include <QPropertyAnimation>
 
-RobotManager::RobotManager(QGraphicsItemAnimation* a)
+
+RobotManager::RobotManager()
 {
-    animation = a;
 }
 
 /*
@@ -45,8 +46,10 @@ void RobotManager::updateVelocities()
 // get intensity from sensor left/right
 double RobotManager::getIntensity(LightSource* light, Robot* robot, Robot::Side side)
 {
-    QPointF sensorPos = robot->getSensorPos(side);
+    QPointF sensorPos = robot->mapToScene(robot->getSensorPos(side));
+    // qDebug() << "Sensor Pos:" << sensorPos << robot->mapToScene(robot->getSensorPos(side));
     QPointF lightPos = light->pos();
+    // qDebug() << "light Pos:" << lightPos << light->mapToScene(lightPos);
 
     double diffX = sensorPos.x() - lightPos.x();
     double diffY = sensorPos.y() - lightPos.y();
@@ -61,51 +64,38 @@ void RobotManager::clear() {
     m_lights.clear();
 }
 
-void RobotManager::moveRobots(){
+void RobotManager::moveRobots() {
 
+    double offset = 50;
+    m_animations = new QParallelAnimationGroup;
+    QPropertyAnimation *posAnimation;
+    QPropertyAnimation *rotAnimation;
+    Robot* robot;
+    for (int i=0; i<m_robots.size(); i++){
+        robot = m_robots[i];
 
-    /*QGraphicsView *view = new QGraphicsView(this);
-    QGraphicsScene *sc = new QGraphicsScene(this);
-    QPixmap f("house.png");
-    QGraphicsPixmapItem *first = sc->addPixmap(f);
-    QGraphicsPixmapItem *sec = sc->addPixmap(f);
-    //QPointF s(0.0, 148.0), e(689.0, 356.0);
-    QPointF s(0.0, 0.0), e(689.0, 356.0);
+        posAnimation = new QPropertyAnimation(robot, "pos");
+        rotAnimation = new QPropertyAnimation(robot, "rotation");
 
-    first->setPos(s);
-    sec->setPos(e);
-    view->setScene(sc);
-    showMaximized();
+        posAnimation->setDuration(1000);
+        posAnimation->setEasingCurve(QEasingCurve::Linear);
+        QPointF offset = robot->calculateNewPosition(10);
+        qDebug() << "Pos: " << robot->pos() << offset;
 
-    setCentralWidget((QWidget*)view);
-    view->show();
+        posAnimation->setStartValue(robot->pos());
+        posAnimation->setEndValue(robot->calculateNewPosition(10) + robot->pos());
+        qDebug() << "Angle: " << robot->rotation() << robot->getTheta();
+        rotAnimation->setDuration(1000);
+        rotAnimation->setEasingCurve(QEasingCurve::Linear);
+        rotAnimation->setStartValue(robot->rotation());
+        rotAnimation->setEndValue( robot->getTheta());
 
-    QGraphicsEllipseItem *data = new QGraphicsEllipseItem(s.x(), s.y(), 10, 10);
-    data->setPen(QPen(Qt::black));*/
-    //data->setBrush(QBrush(Qt::black, Qt:olidPattern));
+        m_animations->addAnimation(posAnimation);
+        m_animations->addAnimation(rotAnimation);
 
+    }
 
-    Robot* robot = m_robots[0];
-    qDebug() << "origin" << robot->transformOriginPoint();
-    QTimeLine *timer = new QTimeLine;
-    timer->setEasingCurve(QEasingCurve::Linear);
-    animation->setItem(robot);
-    animation->setTimeLine(timer);
-
-
-    animation->setPosAt(0,robot->pos());
-    animation->setPosAt(1, robot->pos() + QPointF(400,400));
-    animation->setRotationAt(0, robot->rotation());
-    animation->setRotationAt(1, robot->rotation() + 200);
-
-    timer->setUpdateInterval(20);
-    timer->setLoopCount(1);
-    timer->setDuration(2000);
-
-
-    timer->start();
-
-
+    m_animations->start();
     /* int rw = ROBOT_WIDTH;
     for(int i = 0; i < m_robots.size(); i++){
         Robot* current = m_robots[i];

@@ -5,6 +5,8 @@
 #include <vector>
 #include <QtAlgorithms>
 #include "robotmanager.h"
+#include <QGraphicsSceneMouseEvent>
+
 
 class Canvas : public QGraphicsScene
 {
@@ -21,6 +23,8 @@ public slots:
     void move();
 
 private:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
     QVector<QPointF> defaultBotLoc(int num);
     QVector<QPointF> defaultLightLoc(int num);
     void createRobot(Robot* robot);

@@ -11,11 +11,17 @@ Canvas::Canvas(QObject *parent) :
 {
 }
 
+void Canvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << event->scenePos();
+
+}
+
 void Canvas::initialize(){
 
 
-    QGraphicsItemAnimation* animation = new QGraphicsItemAnimation(this);
-     m_robotManager = new RobotManager(animation);
+    m_robotManager = new RobotManager();
+    // m_robotManager->setCanvas(this);
    /* LightSource* lightSource = new LightSource();
     m_robotManager->setLightSource(lightSource);
     this->addItem(lightSource);*/
@@ -38,8 +44,8 @@ QVector<QPointF> Canvas::defaultBotLoc(int num) {
     for (int i = 0; i < num; i++)
     {
         QPointF point;
-        point.setX(500 * (i+1));
-        point.setY(500 * (i+1));
+        point.setX(100 * (i+1));
+        point.setY(100 * (i+1));
         qDebug() << "BOTLOC" << i << "is" << point.x() << "," << point.y();
         vec.push_back(point);
     }
@@ -64,7 +70,7 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
     this->addLine(0,0,400,400);
     if (bots == 0)
     {
-        bots = 1;
+        bots = 2;
         qDebug() << "ERROR: Invalid number of robots. Defaulting to 1.";
     }
     if (lights == 0)
@@ -88,8 +94,7 @@ void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPoint
     m_robotManager->setKMatrix(matrix);
     Robot* robot;
     for(int i = 0; i < bots; i++) {
-        robot = new Robot();
-        robot->setTransformOriginPoint(ROBOT_HEIGHT, ROBOT_HEIGHT);
+        robot = new Robot(i);
 
         robot->setPos(botLoc[i]);
 
@@ -113,7 +118,7 @@ void Canvas::clear() {
 
 void Canvas::move()
 {
-    //m_robotManager->updateVelocities();
+    m_robotManager->updateVelocities();
     m_robotManager->moveRobots();
 }
 
