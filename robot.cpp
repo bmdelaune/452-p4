@@ -38,8 +38,8 @@ void Robot::paint(QPainter *painter,
         QPointF frontLeft = getSensorPos(LEFT);
         QPointF frontRight = getSensorPos(RIGHT);
         painter->drawRect(0, 0, ROBOT_WIDTH, ROBOT_HEIGHT);
-        painter->drawEllipse(0, 0, 5, 5);
-        painter->drawEllipse(ROBOT_WIDTH, 0, 5, 5);
+        painter->drawEllipse(-5, 0, 5, 10);
+        painter->drawEllipse(ROBOT_WIDTH, 0, 5, 10);
 
         //this->setPos(QPointF(0, ROBOT_HEIGHT));
 /*

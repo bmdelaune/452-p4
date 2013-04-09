@@ -67,7 +67,6 @@ QVector<QPointF> Canvas::defaultLightLoc(int num) {
 
 void Canvas::setup(int bots, int lights, QVector<QPointF> botLoc, QVector<QPointF> lightLoc, int **matrix) {
 
-    this->addLine(0,0,400,400);
     if (bots == 0)
     {
         bots = 2;

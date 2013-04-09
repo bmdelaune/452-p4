@@ -56,9 +56,7 @@ void RobotManager::updateVelocities()
 double RobotManager::getIntensity(LightSource* light, Robot* robot, Robot::Side side)
 {
     QPointF sensorPos = robot->getSensorPos(side);
-    qDebug() << "Sensor Pos:" << sensorPos << robot->mapToScene(robot->getSensorPos(side));
     QPointF lightPos = light->pos();
-    qDebug() << "light Pos:" << lightPos << light->mapToScene(lightPos);
 
     double diffX = sensorPos.x() - lightPos.x();
     double diffY = sensorPos.y() - lightPos.y();
@@ -75,7 +73,6 @@ void RobotManager::clear() {
 
 void RobotManager::moveRobots() {
 
-    double offset = 50;
     m_animations = new QParallelAnimationGroup;
     QPropertyAnimation *posAnimation;
     QPropertyAnimation *rotAnimation;
@@ -90,11 +87,11 @@ void RobotManager::moveRobots() {
         posAnimation->setDuration(1000);
         posAnimation->setEasingCurve(QEasingCurve::Linear);
         QPointF offset = robot->calculateNewPosition(2);
-        qDebug() << "Pos: " << robot->pos() << offset;
+        // qDebug() << "Pos: " << robot->pos() << offset;
 
         posAnimation->setStartValue(robot->pos());
         posAnimation->setEndValue(offset + robot->pos());
-        qDebug() << "Angle: " << robot->rotation() << robot->getTheta();
+        // qDebug() << "Angle: " << robot->rotation() << robot->getTheta();
         rotAnimation->setDuration(1000);
         rotAnimation->setEasingCurve(QEasingCurve::Linear);
         rotAnimation->setStartValue(robot->rotation());
@@ -102,7 +99,7 @@ void RobotManager::moveRobots() {
 
         m_animations->addAnimation(posAnimation);
         m_animations->addAnimation(rotAnimation);
-        qDebug();
+        // qDebug();
     }
     QObject::connect(m_animations, SIGNAL(finished()), this, SLOT(startAnimation()));
     m_animations->start();
