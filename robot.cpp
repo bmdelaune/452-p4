@@ -54,6 +54,32 @@ void Robot::setPos(QPointF pos)
     getWheel(RIGHT)->setLoc(QPointF(pos.x()+ROBOT_WIDTH/2,pos.y()+ROBOT_HEIGHT/2));
 }
 
+QPointF Robot::calculateNewPosition(Robot* robot, double time)
+{
+    //The point in question is the location of the left wheel of the robot. This can be changed later
+
+    // get current location values
+    Wheel* leftWheel = robot->getWheel(LEFT);
+    Wheel* rightWheel = robot->getWheel(RIGHT);
+    double xLocLeft = leftWheel->getLoc.x();
+    double yLocLeft = leftWheel->getLoc.y();
+    double xLocRight= rightWheel->getLoc.x();
+    double yLocRight = rightWheel->getLoc.y();
+    double dot_product = xLocLeft * xLocRight + yLocLeft * yLocRight;
+    double magLeft = sqrt(pow(xLocLeft,2)+pow(yLocLeft,2));
+    double magRight = sqrt(pow(xLocRight,2)+pow(yLocRight,2));
+    double theta = acos(dot_product / (magLeft * magRight));
+    double velLeft = leftWheel->getVelocity();
+    double velRight = rightWheel->getVelocity();
+    double targetXLoc = xLocLeft;
+    double targetYLoc = yLocLeft;
+
+    targetXLoc += ROBOT_WIDTH*((velRight+velLeft)/(2*(velRight-velLeft)))*(sin((velRight-velLeft)*time/ROBOT_WIDTH+theta)-sin(theta));
+    targetYLoc += ROBOT_WIDTH*((velRight+velLeft)/(2*(velRight-velLeft)))*(cos((velRight-velLeft)*time/ROBOT_WIDTH+theta)-cos(theta));
+
+    return QPointF(targetXLoc, targetYLoc);
+}
+
 QPointF Robot::getSensorPos(Robot::Side side)
 {
     double theta = PI/2 - asin((getWheel(LEFT)->getLoc().y()-getWheel(RIGHT)->getLoc().y())/ROBOT_WIDTH);
